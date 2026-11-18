@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Forma3D Studio — Criador 3D & Biblioteca Livre Integrada (100% Grátis)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script type="module" crossorigin src="/assets/index-BxEQf9xW.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-BTUbPuZu.css">
+</head>
+<body>
+  <div id="app">
+    <!-- TOP HEADER / TOOLBAR -->
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5z" fill="rgba(99,102,241,0.25)"/>
+            <path d="M2 17l10 5 10-5"/>
+            <path d="M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>Forma3D <span class="badge-free">100% GRÁTIS</span></h1>
+          <span class="subtitle">Estúdio de Modelagem &amp; Biblioteca 3D Aberta (720+ Modelos)</span>
+        </div>
+      </div>
+
+      <!-- CENTER TRANSFORM TOOLS -->
+      <div class="toolbar-center">
+        <div class="tool-group" role="group" aria-label="Ferramentas de Transformação">
+          <button class="tool-btn active" id="tool-translate" title="Mover Objeto (Atalho: G ou W)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 9l-3 3 3 3M9 5l3-3 3 3M15 19l-3 3-3-3M19 9l3 3-3 3M2 12h20M12 2v20"/></svg>
+            <span>Mover</span>
+            <kbd>G</kbd>
+          </button>
+          <button class="tool-btn" id="tool-rotate" title="Rotacionar Objeto (Atalho: R ou E)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38"/></svg>
+            <span>Girar</span>
+            <kbd>R</kbd>
+          </button>
+          <button class="tool-btn" id="tool-scale" title="Escalar Objeto (Atalho: S ou T)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 3h-6M21 3v6M21 3l-7 7M3 21h6M3 21v-6M3 21l7-7"/></svg>
+            <span>Escalar</span>
+            <kbd>S</kbd>
+          </button>
+        </div>
+
+        <div class="divider-v"></div>
+
+        <div class="tool-group">
+          <button class="tool-btn" id="btn-snap" title="Ativar/Desativar Imã de Grade (Snap)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3v7a6 6 0 0 0 12 0V3"/><line x1="4" y1="3" x2="8" y2="3"/><line x1="16" y1="3" x2="20" y2="3"/></svg>
+            <span>Snap</span>
+          </button>
+          <button class="tool-btn" id="btn-duplicate" title="Duplicar Selecionado (Ctrl+D)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span>Duplicar</span>
+          </button>
+          <button class="tool-btn" id="btn-ground" title="Pousar Objeto no Chão (Atalho: F)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v14M7 12l5 5 5-5M4 21h16"/></svg>
+            <span>No Chão</span>
+          </button>
+          <button class="tool-btn danger" id="btn-delete" title="Excluir Objeto Selecionado (Delete)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+            <span>Excluir</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- RIGHT EXPORT & IMPORT ACTIONS -->
+      <div class="toolbar-right">
+        <input type="file" id="file-import-input" accept=".glb,.gltf,.obj,.stl" hidden multiple />
+        <button class="action-btn secondary" id="btn-import" title="Importar arquivo 3D do seu computador (.GLB, .GLTF, .OBJ, .STL)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          <span>Importar 3D</span>
+        </button>
+
+        <button class="action-btn secondary" id="btn-screenshot" title="Tirar Foto / Render em Alta Resolução (.PNG)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          <span>Foto PNG</span>
+        </button>
+
+        <div class="export-dropdown-wrap">
+          <button class="action-btn primary" id="btn-export-menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span>Exportar 3D Grátis</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="chev"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="export-menu hidden" id="export-menu">
+            <div class="export-menu-header">Baixar Cena ou Modelo (100% Livre)</div>
+            <button data-export="glb">
+              <strong>.GLB (Binário Padrão)</strong>
+              <span>Ideal para Blender, Unity, Unreal, Godot e Web</span>
+            </button>
+            <button data-export="gltf">
+              <strong>.GLTF (JSON Universal)</strong>
+              <span>Formato aberto Khronos editável</span>
+            </button>
+            <button data-export="obj">
+              <strong>.OBJ (Wavefront 3D)</strong>
+              <span>Compatível com qualquer software 3D</span>
+            </button>
+            <button data-export="stl">
+              <strong>.STL (Impressão 3D)</strong>
+              <span>Pronto para fatiadores (Cura, PrusaSlicer, Orca)</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN WORKSPACE -->
+    <main class="workspace">
+      <!-- LEFT SIDEBAR: SHAPE CREATOR & FREE 3D LIBRARIES -->
+      <aside class="sidebar-left">
+        <nav class="library-tabs" role="tablist">
+          <button class="lib-tab active" data-tab="shapes" role="tab">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+            <span>Criar Formas</span>
+            <small>20+ Geradores</small>
+          </button>
+          <button class="lib-tab" data-tab="polyhaven" role="tab">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            <span>Poly Haven</span>
+            <small id="badge-ph-count">522+ CC0</small>
+          </button>
+          <button class="lib-tab" data-tab="khronos" role="tab">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <span>Khronos API</span>
+            <small id="badge-kh-count">151+ glTF</small>
+          </button>
+          <button class="lib-tab" data-tab="curated" role="tab">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <span>Coleção Extra</span>
+            <small>30+ Modelos</small>
+          </button>
+        </nav>
+
+        <!-- TAB 1: PROCEDURAL 3D SHAPES CREATOR -->
+        <section class="tab-panel active" id="panel-shapes">
+          <div class="panel-scroll">
+            <!-- 3D TEXT GENERATOR -->
+            <div class="card-box highlight-box">
+              <div class="box-title">
+                <span>✨ Gerador de Texto 3D Extrudado</span>
+              </div>
+              <div class="text3d-form">
+                <input type="text" id="input-text3d" placeholder="Digite seu texto (ex: BRASIL)" value="FORMA 3D" maxlength="24" />
+                <button id="btn-create-text3d" class="btn-accent">Criar</button>
+              </div>
+            </div>
+
+            <!-- PARAMETRIC SHAPES GRID -->
+            <div class="section-label">Primitivas &amp; Sólidos Geométricos</div>
+            <div class="shapes-grid" id="shapes-grid-basic"></div>
+
+            <div class="section-label">Formas Especiais, Curvas &amp; Mecânicas</div>
+            <div class="shapes-grid" id="shapes-grid-special"></div>
+
+            <div class="section-label">Poliedros, Cristais &amp; Terreno</div>
+            <div class="shapes-grid" id="shapes-grid-poly"></div>
+
+            <!-- SCENE STARTER TEMPLATES -->
+            <div class="section-label">Cenas Prontas &amp; Kitbash</div>
+            <div class="templates-list">
+              <button class="template-btn" data-template="abstract">
+                <span class="t-icon">🎨</span>
+                <div>
+                  <strong>Escultura Abstrata Moderna</strong>
+                  <small>Composição de formas, arcos, esferas e materiais</small>
+                </div>
+              </button>
+              <button class="template-btn" data-template="scifi">
+                <span class="t-icon">🚀</span>
+                <div>
+                  <strong>Núcleo Cyberpunk Neon</strong>
+                  <small>Anéis emissivos, cristal central e engrenagens</small>
+                </div>
+              </button>
+              <button class="template-btn" data-template="island">
+                <span class="t-icon">🏝️</span>
+                <div>
+                  <strong>Ilha Low-Poly &amp; Natureza</strong>
+                  <small>Terreno procedural com árvores, pedras e nuvens</small>
+                </div>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 2: POLY HAVEN API (522+ FREE CC0 3D MODELS) -->
+        <section class="tab-panel" id="panel-polyhaven">
+          <div class="api-header">
+            <div class="search-bar">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="search" id="ph-search" placeholder="Buscar em 522+ modelos (ex: chair, table, rock, plant, sofa)..." />
+            </div>
+            <div class="filter-row">
+              <div class="chips-scroll" id="ph-categories">
+                <button class="chip active" data-cat="all">Todos (522)</button>
+                <button class="chip" data-cat="furniture">Móveis</button>
+                <button class="chip" data-cat="nature">Natureza &amp; Plantas</button>
+                <button class="chip" data-cat="props">Objetos &amp; Props</button>
+                <button class="chip" data-cat="decorative">Decoração</button>
+                <button class="chip" data-cat="architecture">Arquitetura</button>
+                <button class="chip" data-cat="industrial">Industrial</button>
+                <button class="chip" data-cat="electronics">Eletrônicos</button>
+                <button class="chip" data-cat="food">Alimentos</button>
+                <button class="chip" data-cat="tools">Ferramentas</button>
+              </div>
+            </div>
+            <div class="api-meta-bar">
+              <span id="ph-status-text">Carregando catálogo Poly Haven CC0...</span>
+              <select id="ph-res-select" title="Resolução das Texturas PBR">
+                <option value="1k" selected>Texturas 1K (Rápido)</option>
+                <option value="2k">Texturas 2K (HD)</option>
+              </select>
+            </div>
+          </div>
+          <div class="catalog-grid" id="ph-grid"></div>
+        </section>
+
+        <!-- TAB 3: KHRONOS OFFICIAL GLTF SAMPLE ASSETS API (151+ MODELS) -->
+        <section class="tab-panel" id="panel-khronos">
+          <div class="api-header">
+            <div class="search-bar">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="search" id="kh-search" placeholder="Buscar em 151+ modelos Khronos (ex: helmet, car, fox, duck)..." />
+            </div>
+            <div class="filter-row">
+              <div class="chips-scroll" id="kh-tags">
+                <button class="chip active" data-tag="all">Todos (151)</button>
+                <button class="chip" data-tag="showcase">Destaques</button>
+                <button class="chip" data-tag="extension">Avançados PBR</button>
+                <button class="chip" data-tag="core">Essenciais</button>
+                <button class="chip" data-tag="video">Showcase 3D</button>
+              </div>
+            </div>
+            <div class="api-meta-bar">
+              <span id="kh-status-text">Carregando repositório oficial Khronos glTF...</span>
+              <span class="license-pill">API Oficial GitHub CDN</span>
+            </div>
+          </div>
+          <div class="catalog-grid" id="kh-grid"></div>
+        </section>
+
+        <!-- TAB 4: CURATED THREE.JS & ANIMATED SHOWCASE MODELS -->
+        <section class="tab-panel" id="panel-curated">
+          <div class="api-header">
+            <div class="search-bar">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="search" id="curated-search" placeholder="Buscar personagens animados, veículos, cenas..." />
+            </div>
+            <div class="filter-row">
+              <div class="chips-scroll" id="curated-cats">
+                <button class="chip active" data-cat="all">Todos</button>
+                <button class="chip" data-cat="characters">Personagens &amp; Robôs</button>
+                <button class="chip" data-cat="animals">Animais Animados</button>
+                <button class="chip" data-cat="vehicles">Veículos &amp; Sci-Fi</button>
+                <button class="chip" data-cat="props">Arte, Relógios &amp; Cenas</button>
+              </div>
+            </div>
+          </div>
+          <div class="catalog-grid" id="curated-grid"></div>
+        </section>
+      </aside>
+
+      <!-- CENTER 3D VIEWPORT -->
+      <section class="viewport-container" id="viewport-container">
+        <canvas id="three-canvas"></canvas>
+
+        <!-- DRAG & DROP OVERLAY -->
+        <div class="drop-overlay hidden" id="drop-overlay">
+          <div class="drop-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            <h3>Solte seu arquivo 3D aqui</h3>
+            <p>Suporta .GLB, .GLTF, .OBJ e .STL gratuitamente</p>
+          </div>
+        </div>
+
+        <!-- LOADING INDICATOR OVERLAY -->
+        <div class="loading-pill hidden" id="loading-pill">
+          <div class="spinner"></div>
+          <div class="loading-info">
+            <strong id="loading-title">Baixando modelo 3D da biblioteca...</strong>
+            <div class="progress-track"><div class="progress-fill" id="loading-bar"></div></div>
+          </div>
+        </div>
+
+        <!-- ANIMATION PLAYER BAR (APPEARS WHEN MODEL HAS ANIMATIONS) -->
+        <div class="anim-bar hidden" id="anim-bar">
+          <button class="anim-btn" id="btn-anim-toggle" title="Play / Pause Animação">
+            <svg viewBox="0 0 24 24" fill="currentColor" id="icon-anim-play"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+          </button>
+          <div class="anim-select-wrap">
+            <label for="select-anim-clip">Animação:</label>
+            <select id="select-anim-clip"></select>
+          </div>
+          <div class="anim-speed-wrap">
+            <label for="input-anim-speed">Vel:</label>
+            <input type="range" id="input-anim-speed" min="0.1" max="2.5" step="0.1" value="1.0" />
+            <span id="label-anim-speed">1.0x</span>
+          </div>
+        </div>
+
+        <!-- QUICK CAMERA & VIEW CONTROLS (TOP RIGHT OF VIEWPORT) -->
+        <div class="viewport-controls">
+          <button class="vp-btn" id="btn-cam-reset" title="Resetar Câmera">🎯 Focar Cena</button>
+          <button class="vp-btn" id="btn-cam-top" title="Vista Superior">Topo</button>
+          <button class="vp-btn" id="btn-cam-front" title="Vista Frontal">Frente</button>
+          <button class="vp-btn" id="btn-turntable" title="Girar Câmera Automaticamente (Turntable)">🔄 Girar 360°</button>
+          <button class="vp-btn" id="btn-clear-scene" title="Limpar Todos os Objetos da Cena">🗑️ Limpar</button>
+        </div>
+
+        <!-- VIEWPORT FOOTER STATUS BAR -->
+        <footer class="viewport-statusbar">
+          <div class="stats-left">
+            <span>Objetos: <strong id="stat-objects">0</strong></span>
+            <span>Vértices: <strong id="stat-verts">0</strong></span>
+            <span>Triângulos: <strong id="stat-tris">0</strong></span>
+          </div>
+          <div class="stats-right">
+            <span>Clique p/ selecionar • Duplo clique p/ focar • Arraste arquivos 3D na tela</span>
+          </div>
+        </footer>
+      </section>
+
+      <!-- RIGHT SIDEBAR: INSPECTOR, PARAMETRIC SHAPE EDITOR, MATERIALS & SCENE -->
+      <aside class="sidebar-right">
+        <div class="inspector-scroll">
+          <!-- SCENE HIERARCHY / OUTLINER -->
+          <div class="inspector-section">
+            <div class="section-header">
+              <h3>🗂️ Objetos na Cena (<span id="outliner-count">0</span>)</h3>
+            </div>
+            <div class="outliner-list" id="outliner-list">
+              <div class="empty-hint">Nenhum objeto na cena. Crie uma forma ou escolha um modelo 3D!</div>
+            </div>
+          </div>
+
+          <!-- SELECTED OBJECT INSPECTOR -->
+          <div id="selected-inspector" class="hidden">
+            <!-- OBJECT NAME & HEADER -->
+            <div class="inspector-section">
+              <div class="selected-header">
+                <input type="text" id="inp-obj-name" class="obj-name-input" title="Renomear Objeto" />
+                <span class="obj-type-badge" id="badge-obj-type">Forma</span>
+              </div>
+
+              <!-- TRANSFORM X Y Z -->
+              <div class="transform-grid">
+                <div class="t-row">
+                  <label>Posição</label>
+                  <div class="xyz-inputs">
+                    <div class="xyz-field"><span class="axis-x">X</span><input type="number" step="0.1" id="pos-x"></div>
+                    <div class="xyz-field"><span class="axis-y">Y</span><input type="number" step="0.1" id="pos-y"></div>
+                    <div class="xyz-field"><span class="axis-z">Z</span><input type="number" step="0.1" id="pos-z"></div>
+                  </div>
+                </div>
+                <div class="t-row">
+                  <label>Rotação (°)</label>
+                  <div class="xyz-inputs">
+                    <div class="xyz-field"><span class="axis-x">X</span><input type="number" step="5" id="rot-x"></div>
+                    <div class="xyz-field"><span class="axis-y">Y</span><input type="number" step="5" id="rot-y"></div>
+                    <div class="xyz-field"><span class="axis-z">Z</span><input type="number" step="5" id="rot-z"></div>
+                  </div>
+                </div>
+                <div class="t-row">
+                  <label>Escala</label>
+                  <div class="xyz-inputs">
+                    <div class="xyz-field"><span class="axis-x">X</span><input type="number" step="0.1" min="0.05" id="scl-x"></div>
+                    <div class="xyz-field"><span class="axis-y">Y</span><input type="number" step="0.1" min="0.05" id="scl-y"></div>
+                    <div class="xyz-field"><span class="axis-z">Z</span><input type="number" step="0.1" min="0.05" id="scl-z"></div>
+                  </div>
+                </div>
+                <div class="slider-row">
+                  <label>Escala Geral</label>
+                  <input type="range" id="scl-uniform" min="0.1" max="5" step="0.05" value="1" />
+                  <span id="val-scl-uniform">1.0x</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- PARAMETRIC SHAPE & DEFORMERS SECTION (FOR PROCEDURAL SHAPES) -->
+            <div class="inspector-section" id="parametric-section">
+              <div class="section-header">
+                <h3>⚙️ Geometria &amp; Deformadores 3D</h3>
+                <button class="mini-btn" id="btn-reset-deform" title="Resetar Deformações">Resetar</button>
+              </div>
+              <div id="shape-params-container" class="params-stack"></div>
+
+              <div class="sub-divider">Deformadores de Malha em Tempo Real</div>
+              <div class="params-stack">
+                <div class="slider-row">
+                  <label title="Torcer os vértices da forma ao longo do eixo Y">Torcer (Twist)</label>
+                  <input type="range" id="mod-twist" min="-6.28" max="6.28" step="0.05" value="0" />
+                  <span id="val-mod-twist">0°</span>
+                </div>
+                <div class="slider-row">
+                  <label title="Afinar ou alargar o topo da forma 3D">Afinar (Taper)</label>
+                  <input type="range" id="mod-taper" min="-1" max="1.5" step="0.02" value="0" />
+                  <span id="val-mod-taper">0%</span>
+                </div>
+                <div class="slider-row">
+                  <label title="Ondulação senoidal na superfície 3D">Ondular (Wave)</label>
+                  <input type="range" id="mod-wave" min="0" max="0.8" step="0.02" value="0" />
+                  <span id="val-mod-wave">0.0</span>
+                </div>
+                <div class="slider-row">
+                  <label title="Deslocamento orgânico / cristalizado nos vértices">Ruído (Noise)</label>
+                  <input type="range" id="mod-noise" min="0" max="0.6" step="0.01" value="0" />
+                  <span id="val-mod-noise">0.0</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- MATERIAL STUDIO SECTION -->
+            <div class="inspector-section">
+              <div class="section-header">
+                <h3>🎨 Material PBR &amp; Textura</h3>
+              </div>
+
+              <!-- QUICK MATERIAL PRESETS -->
+              <div class="mat-presets" id="mat-presets">
+                <button class="mat-pill" data-mat="plastic" title="Plástico Brilhante"><span style="background:#6366f1"></span>Plástico</button>
+                <button class="mat-pill" data-mat="gold" title="Ouro Metálico"><span style="background:linear-gradient(135deg,#f59e0b,#fef08a)"></span>Ouro</button>
+                <button class="mat-pill" data-mat="chrome" title="Cromo Espelhado"><span style="background:linear-gradient(135deg,#94a3b8,#f8fafc)"></span>Cromo</button>
+                <button class="mat-pill" data-mat="neon" title="Neon Emissivo"><span style="background:#06b6d4;box-shadow:0 0 8px #06b6d4"></span>Neon</button>
+                <button class="mat-pill" data-mat="glass" title="Vidro Translúcido"><span style="background:rgba(186,230,253,0.5);border:1px solid #fff"></span>Vidro</button>
+                <button class="mat-pill" data-mat="clay" title="Argila / Matte"><span style="background:#d97757"></span>Argila</button>
+                <button class="mat-pill" data-mat="emerald" title="Cristal Esmeralda"><span style="background:#10b981"></span>Esmeralda</button>
+                <button class="mat-pill" data-mat="holo" title="Holograma Wireframe"><span style="background:#a855f7"></span>Holo</button>
+              </div>
+
+              <div class="params-stack">
+                <div class="color-row">
+                  <label>Cor Base</label>
+                  <div class="color-picker-group">
+                    <input type="color" id="mat-color" value="#6366f1" />
+                    <div class="color-swatches" id="color-swatches">
+                      <button data-color="#6366f1" style="background:#6366f1"></button>
+                      <button data-color="#ec4899" style="background:#ec4899"></button>
+                      <button data-color="#10b981" style="background:#10b981"></button>
+                      <button data-color="#f59e0b" style="background:#f59e0b"></button>
+                      <button data-color="#06b6d4" style="background:#06b6d4"></button>
+                      <button data-color="#ef4444" style="background:#ef4444"></button>
+                      <button data-color="#f8fafc" style="background:#f8fafc"></button>
+                      <button data-color="#1e293b" style="background:#1e293b"></button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="slider-row">
+                  <label>Metalicidade</label>
+                  <input type="range" id="mat-metalness" min="0" max="1" step="0.01" value="0.15" />
+                  <span id="val-mat-metalness">0.15</span>
+                </div>
+
+                <div class="slider-row">
+                  <label>Rugosidade</label>
+                  <input type="range" id="mat-roughness" min="0" max="1" step="0.01" value="0.35" />
+                  <span id="val-mat-roughness">0.35</span>
+                </div>
+
+                <div class="slider-row">
+                  <label>Brilho Neon</label>
+                  <input type="range" id="mat-emissive" min="0" max="2" step="0.05" value="0" />
+                  <span id="val-mat-emissive">0.0</span>
+                </div>
+
+                <div class="slider-row">
+                  <label>Opacidade</label>
+                  <input type="range" id="mat-opacity" min="0.1" max="1" step="0.02" value="1" />
+                  <span id="val-mat-opacity">100%</span>
+                </div>
+
+                <div class="toggles-row">
+                  <label class="checkbox-pill">
+                    <input type="checkbox" id="mat-wireframe" />
+                    <span>Wireframe (Malha)</span>
+                  </label>
+                  <label class="checkbox-pill">
+                    <input type="checkbox" id="mat-flat" />
+                    <span>Low-Poly (Facetado)</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ENVIRONMENT & LIGHTING STUDIO -->
+          <div class="inspector-section">
+            <div class="section-header">
+              <h3>💡 Ambiente &amp; Iluminação</h3>
+            </div>
+            <div class="params-stack">
+              <div class="slider-row">
+                <label>Tema de Fundo</label>
+                <select id="env-preset" class="full-select">
+                  <option value="dark" selected>Estúdio Escuro Profissional</option>
+                  <option value="sunset">Entardecer Quente (Golden Hour)</option>
+                  <option value="cyber">Cyberpunk Noite</option>
+                  <option value="daylight">Luz do Dia Clara</option>
+                  <option value="void">Preto Infinito (Contraste)</option>
+                </select>
+              </div>
+              <div class="slider-row">
+                <label>Intensidade Luz</label>
+                <input type="range" id="env-light-int" min="0.2" max="4" step="0.1" value="1.6" />
+                <span id="val-env-light">1.6</span>
+              </div>
+              <div class="toggles-row">
+                <label class="checkbox-pill">
+                  <input type="checkbox" id="env-grid" checked />
+                  <span>Mostrar Grade</span>
+                </label>
+                <label class="checkbox-pill">
+                  <input type="checkbox" id="env-shadows" checked />
+                  <span>Sombras 3D</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+</body>
+</html>
