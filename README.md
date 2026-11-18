@@ -32,7 +32,7 @@ Estúdio web **100% gratuito e open-source** para criação de formas 3D no nave
 
 ```bash
 # 1. Clone o repositório
-git clone https://github.com/SEU-USUARIO/forma3d-studio.git
+git clone https://github.com/joaoguilhermesnts/forma3d-studio.git
 
 # 2. Entre na pasta do projeto
 cd forma3d-studio
